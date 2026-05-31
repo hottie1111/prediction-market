@@ -1,3 +1,3 @@
-import { runCronRequest } from './cron-request'
+import { runCronRequest } from './cron-request.ts'
 
 await runCronRequest('/api/sync/resolution')

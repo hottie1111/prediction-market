@@ -47,6 +47,45 @@ export function formatSportsEventStartLabels(timestamp: number, locale: string) 
   }
 }
 
+export function formatSportsEventLocalStartLabels(timestamp: number, locale: string, timeZone?: string) {
+  const resolvedTimeZone = timeZone ?? new Intl.DateTimeFormat().resolvedOptions().timeZone
+  if (!resolvedTimeZone) {
+    return null
+  }
+
+  const date = new Date(timestamp)
+  const timeLabel = new Intl.DateTimeFormat(locale, {
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: resolvedTimeZone,
+  }).format(date)
+  const dayLabel = new Intl.DateTimeFormat(locale, {
+    month: 'long',
+    day: 'numeric',
+    timeZone: resolvedTimeZone,
+  }).format(date)
+
+  return {
+    timeLabel,
+    dayLabel,
+  }
+}
+
+export function formatSportsRelatedGameStartLabel(date: Date, locale: string) {
+  const dateLabel = new Intl.DateTimeFormat(locale, {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }).format(date)
+  const timeLabel = new Intl.DateTimeFormat(locale, {
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: 'UTC',
+  }).format(date)
+
+  return `${dateLabel}, ${timeLabel}`
+}
+
 export function subscribeToOddsFormatStorage(listener: () => void) {
   if (typeof window === 'undefined') {
     return function unsubscribeFromOddsFormatStorage() {}
